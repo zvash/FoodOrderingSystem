@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:${KAFKA_VERSION:-latest}
+    image: confluentinc/cp-zookeeper:${KAFKA_VERSION:-3.7temurin}
     hostname: zookeeper
     ports:
       - "2181:2181"
