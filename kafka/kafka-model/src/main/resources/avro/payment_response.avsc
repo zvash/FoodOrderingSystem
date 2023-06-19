@@ -18,6 +18,13 @@
       }
     },
     {
+      "name": "paymentId",
+      "type": {
+        "type": "string",
+        "logicalType": "uuid"
+      }
+    },
+    {
       "name": "customerId",
       "type": {
         "type": "string",
