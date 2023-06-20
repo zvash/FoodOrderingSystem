@@ -8,8 +8,8 @@ logging:
 order-service:
   payment-request-topic-name: payment-request
   payment-response-topic-name: payment-response
-  restaurant-approvel-request-topic-name: restaurant-approval-request
-  restaurant-approvel-response-topic-name: restaurant-approval-response
+  restaurant-approval-request-topic-name: restaurant-approval-request
+  restaurant-approval-response-topic-name: restaurant-approval-response
 
 spring:
   jpa:
@@ -22,7 +22,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
     username:
-    password:
+    password: 
     driver-class-name: org.postgresql.Driver
   sql:
     init:
