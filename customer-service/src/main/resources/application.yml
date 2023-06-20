@@ -11,8 +11,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=customer&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
-    username:
-    password:
+    username: siavash
+    password: ENC(4Mk7vvHDC+s5oJLBP2srRQRoPEKx1mAHUgrt82ZcebuqK0++k1CBC7SLyM5fdwI1)
     driver-class-name: org.postgresql.Driver
   sql:
     init:
@@ -20,3 +20,7 @@ spring:
       schema-locations: classpath:init-schema.sql
       data-locations: classpath:init-data.sql
       mode: always
+
+jasypt:
+  encryptor:
+    password: ${ENCRYPT_KEY}

@@ -21,8 +21,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
-    username:
-    password: 
+    username: siavash
+    password: ENC(4Mk7vvHDC+s5oJLBP2srRQRoPEKx1mAHUgrt82ZcebuqK0++k1CBC7SLyM5fdwI1)
     driver-class-name: org.postgresql.Driver
   sql:
     init:
@@ -66,3 +66,7 @@ kafka-consumer-config:
   max-poll-records: 1048576
   max-partition-fetch-bytes-default: 1
   max-partition-fetch-bytes-boost-factor: 150
+
+jasypt:
+  encryptor:
+    password: ${ENCRYPT_KEY}
