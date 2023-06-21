@@ -5,6 +5,7 @@ import com.food.ordering.system.domain.valueobject.PaymentStatus;
 import com.food.ordering.system.payment.service.domain.entity.CreditEntry;
 import com.food.ordering.system.payment.service.domain.entity.CreditHistory;
 import com.food.ordering.system.payment.service.domain.entity.Payment;
+import com.food.ordering.system.payment.service.domain.event.PaymentCancelledEvent;
 import com.food.ordering.system.payment.service.domain.event.PaymentCompletedEvent;
 import com.food.ordering.system.payment.service.domain.event.PaymentEvent;
 import com.food.ordering.system.payment.service.domain.event.PaymentFailedEvent;
@@ -56,7 +57,26 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
                                                  CreditEntry creditEntry,
                                                  List<CreditHistory> creditHistories,
                                                  List<String> failureMessages) {
-        return null;
+        payment.validatePayment(failureMessages);
+        addCreditEntry(payment, creditEntry);
+        updateCreditHistory(payment, creditHistories, TransactionType.CREDIT);
+
+        if (failureMessages.isEmpty()) {
+            log.info("Payment is cancelled for order id: {}", payment.getOrderId().getValue());
+            payment.updateStatus(PaymentStatus.CANCELLED);
+            return new PaymentCancelledEvent(
+                    payment,
+                    ZonedDateTime.now(ZoneId.of(UTC))
+            );
+        } else {
+            log.info("Payment is cancellation is failed for order id: {}", payment.getOrderId().getValue());
+            payment.updateStatus(PaymentStatus.FAILED);
+            return new PaymentFailedEvent(
+                    payment,
+                    ZonedDateTime.now(ZoneId.of(UTC)),
+                    failureMessages
+            );
+        }
     }
 
     private void validateCreditEntry(Payment payment, CreditEntry creditEntry, List<String> failureMessages) {
@@ -112,5 +132,9 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
                 .filter(creditHistory -> transactionType == creditHistory.getTransactionType())
                 .map(CreditHistory::getAmount)
                 .reduce(Money.ZERO, Money::add);
+    }
+
+    private void addCreditEntry(Payment payment, CreditEntry creditEntry) {
+        creditEntry.addCreditAmount(payment.getPrice());
     }
 }
