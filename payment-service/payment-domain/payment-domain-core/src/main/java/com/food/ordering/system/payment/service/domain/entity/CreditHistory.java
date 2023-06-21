@@ -7,7 +7,7 @@ import com.food.ordering.system.payment.service.domain.valueobject.CreditHistory
 import com.food.ordering.system.payment.service.domain.valueobject.TransactionType;
 
 public class CreditHistory extends BaseEntity<CreditHistoryId> {
-    
+
     private final CustomerId customerId;
     private final Money amount;
     private final TransactionType transactionType;
