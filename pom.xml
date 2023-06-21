@@ -13,6 +13,7 @@
         <module>infrastructure</module>
         <module>kafka</module>
         <module>customer-service</module>
+        <module>payment-service</module>
     </modules>
 
     <parent>
