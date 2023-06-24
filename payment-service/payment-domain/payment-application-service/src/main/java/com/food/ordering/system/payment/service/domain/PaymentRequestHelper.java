@@ -110,8 +110,7 @@ public class PaymentRequestHelper {
     }
 
     private Payment getPaymentFromPaymentRequest(PaymentRequest paymentRequest) {
-        OrderId orderId = new OrderId(UUID.fromString(paymentRequest.getOrderId()));
-        Optional<Payment> optionalPayment = paymentRepository.findByOrderId(orderId);
+        Optional<Payment> optionalPayment = paymentRepository.findByOrderId(UUID.fromString(paymentRequest.getOrderId()));
         if (optionalPayment.isEmpty()) {
             log.error("Payment with order id: {} could not be found!", paymentRequest.getOrderId());
             throw new PaymentApplicationServiceException("Payment with order id: " +
