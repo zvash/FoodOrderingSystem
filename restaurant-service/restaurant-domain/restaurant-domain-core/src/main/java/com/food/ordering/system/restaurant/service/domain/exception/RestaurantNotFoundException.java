@@ -2,12 +2,12 @@ package com.food.ordering.system.restaurant.service.domain.exception;
 
 import com.food.ordering.system.domain.exception.DomainException;
 
-public class RstaurantNotFoundException extends DomainException {
-    public RstaurantNotFoundException(String message) {
+public class RestaurantNotFoundException extends DomainException {
+    public RestaurantNotFoundException(String message) {
         super(message);
     }
 
-    public RstaurantNotFoundException(String message, Throwable cause) {
+    public RestaurantNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }
