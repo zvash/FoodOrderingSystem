@@ -5,17 +5,18 @@ import com.food.ordering.system.domain.valueobject.RestaurantId;
 import com.food.ordering.system.restaurant.service.domain.entity.OrderApproval;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.List;
 
 public class OrderApprovedEvent extends OrderApprovalEvent {
 
     private final DomainEventPublisher<OrderApprovedEvent> orderApprovedEventDomainEventPublisher;
 
-    public OrderApprovedEvent(OrderApproval orderApproval, RestaurantId restaurantId,
+    public OrderApprovedEvent(OrderApproval orderApproval,
+                              RestaurantId restaurantId,
+                              List<String> failureMessages,
                               ZonedDateTime createdAt,
                               DomainEventPublisher<OrderApprovedEvent> orderApprovedEventDomainEventPublisher) {
-        super(orderApproval, restaurantId, Collections.emptyList(), createdAt);
+        super(orderApproval, restaurantId, failureMessages, createdAt);
         this.orderApprovedEventDomainEventPublisher = orderApprovedEventDomainEventPublisher;
     }
 
