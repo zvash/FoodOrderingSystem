@@ -11,7 +11,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 public class KafkaMessageHelper {
 
     public <T> ListenableFutureCallback<SendResult<String, T>>
-    getKafkaCallback(String responseTopicName, T avroModel, String paymentId, String avroModelName) {
+    getKafkaCallback(String responseTopicName, T avroModel, String orderId, String avroModelName) {
         return new ListenableFutureCallback<SendResult<String, T>>() {
             @Override
             public void onFailure(Throwable ex) {
@@ -23,9 +23,9 @@ public class KafkaMessageHelper {
             @Override
             public void onSuccess(SendResult<String, T> result) {
                 RecordMetadata metadata = result.getRecordMetadata();
-                log.info("Received successful response from Kafka for payment id: {} " +
+                log.info("Received successful response from Kafka for order id: {} " +
                                 "Topic: {} Partition: {} Offset: {} Timestamp: {}",
-                        paymentId,
+                        orderId,
                         metadata.topic(),
                         metadata.partition(),
                         metadata.offset(),
