@@ -52,7 +52,7 @@ public class PaymentFailedKafkaMessagePublisher implements PaymentFailedMessageP
             );
 
             log.info("PaymentResponseAvroModel is sent to Kafka for order id: {}",
-                    paymentResponseAvroModel.getPaymentId());
+                    paymentResponseAvroModel.getOrderId());
         } catch (Exception e) {
             log.error("Error while sending PaymentResponseAvroModel message" +
                     " to Kafka with order id: {}, error: {}", orderId, e.getMessage());
