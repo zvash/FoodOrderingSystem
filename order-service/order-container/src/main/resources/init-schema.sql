@@ -43,12 +43,12 @@ ALTER TABLE "order".order_items
 DROP TABLE IF EXISTS "order".order_address CASCADE;
 CREATE TABLE "order".order_address
 (
-    id          bigint NOT NULL,
+    id          uuid NOT NULL,
     order_id    uuid   NOT NULL,
     street      character varying COLLATE pg_catalog."default",
     postal_code character varying COLLATE pg_catalog."default",
     city        character varying COLLATE pg_catalog."default",
-    CONSTRAINT order_address_pkey PRIMARY KEY (id, order_id)
+    CONSTRAINT order_address_pkey PRIMARY KEY (id)
 );
 
 ALTER TABLE "order".order_address
