@@ -106,7 +106,7 @@ public class PaymentRequestHelper {
             throw new PaymentApplicationServiceException("Could not find credit history for customer: " +
                     customerId.getValue());
         }
-        return creditHistories.get();
+        return new ArrayList<>(creditHistories.get());
     }
 
     private Payment getPaymentFromPaymentRequest(PaymentRequest paymentRequest) {
