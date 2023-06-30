@@ -19,7 +19,7 @@ DROP TYPE IF EXISTS approval_status;
 CREATE TYPE approval_status AS ENUM ('APPROVED', 'REJECTED');
 
 DROP TABLE IF EXISTS "restaurant".order_approval CASCADE;
-CREATE TABLE "restaurant".credit_entry
+CREATE TABLE "restaurant".order_approval
 (
     id            uuid            NOT NULL,
     restaurant_id uuid            NOT NULL,
