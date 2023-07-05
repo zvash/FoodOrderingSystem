@@ -40,7 +40,7 @@ public class PaymentOutboxHelper {
             UUID sagaId,
             SagaStatus... sagaStatus
     ) {
-        paymentOutboxRepository.findByTypeAndSagaIdAndSagaStatus(ORDER_SAGA_NAME, sagaId, sagaStatus);
+        return paymentOutboxRepository.findByTypeAndSagaIdAndSagaStatus(ORDER_SAGA_NAME, sagaId, sagaStatus);
     }
 
     @Transactional
