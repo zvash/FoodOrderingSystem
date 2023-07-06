@@ -151,7 +151,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
                         SagaStatus.COMPENSATING);
         if (orderApprovalOutboxMessageResponse.isEmpty()) {
             throw new OrderDomainException("Approval outbox message could not be  found in" +
-                    SagaStatus.COMPENSATING.name() + " status");
+                    SagaStatus.COMPENSATING.name() + " state");
         }
         OrderApprovalOutboxMessage orderApprovalOutboxMessage = orderApprovalOutboxMessageResponse.get();
         orderApprovalOutboxMessage.setProcessedAt(ZonedDateTime.now(ZoneId.of(UTC)));
