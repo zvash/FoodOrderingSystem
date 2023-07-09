@@ -1,16 +1,16 @@
 package com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.mapper;
 
-import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.entity.RestaurantApprovalOutboxEntity;
+import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.entity.ApprovalOutboxEntity;
 import com.food.ordering.system.order.service.domain.outbox.model.approval.OrderApprovalOutboxMessage;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestaurantApprovalOutboxDataAccessMapper {
+public class ApprovalOutboxDataAccessMapper {
 
-    public RestaurantApprovalOutboxEntity OrderApprovalOutboxMessageToRestaurantApprovalOutboxEntity(
+    public ApprovalOutboxEntity OrderApprovalOutboxMessageToApprovalOutboxEntity(
             OrderApprovalOutboxMessage orderApprovalOutboxMessage
     ) {
-        return RestaurantApprovalOutboxEntity.builder()
+        return ApprovalOutboxEntity.builder()
                 .id(orderApprovalOutboxMessage.getId())
                 .sagaId(orderApprovalOutboxMessage.getSagaId())
                 .createdAt(orderApprovalOutboxMessage.getCreatedAt())
@@ -22,8 +22,8 @@ public class RestaurantApprovalOutboxDataAccessMapper {
                 .build();
     }
 
-    public OrderApprovalOutboxMessage restaurantApprovalOutboxEntityToOrderApprovalOutboxMessage(
-            RestaurantApprovalOutboxEntity restaurantApprovalOutboxEntity
+    public OrderApprovalOutboxMessage approvalOutboxEntityToOrderApprovalOutboxMessage(
+            ApprovalOutboxEntity restaurantApprovalOutboxEntity
     ) {
         return OrderApprovalOutboxMessage.builder()
                 .id(restaurantApprovalOutboxEntity.getId())

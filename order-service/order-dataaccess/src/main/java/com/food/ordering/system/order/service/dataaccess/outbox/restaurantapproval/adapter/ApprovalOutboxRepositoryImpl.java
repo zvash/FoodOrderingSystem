@@ -1,8 +1,8 @@
 package com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.adapter;
 
-import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.exception.RestaurantApprovalOutboxNotFoundException;
-import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.mapper.RestaurantApprovalOutboxDataAccessMapper;
-import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.repository.RestaurantApprovalOutboxJpaRepository;
+import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.exception.ApprovalOutboxNotFoundException;
+import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.mapper.ApprovalOutboxDataAccessMapper;
+import com.food.ordering.system.order.service.dataaccess.outbox.restaurantapproval.repository.ApprovalOutboxJpaRepository;
 import com.food.ordering.system.order.service.domain.outbox.model.approval.OrderApprovalOutboxMessage;
 import com.food.ordering.system.order.service.domain.ports.output.repository.ApprovalOutboxRepository;
 import com.food.ordering.system.outbox.OutboxStatus;
@@ -15,23 +15,23 @@ import java.util.UUID;
 
 public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
 
-    private final RestaurantApprovalOutboxJpaRepository restaurantApprovalOutboxJpaRepository;
-    private final RestaurantApprovalOutboxDataAccessMapper restaurantApprovalOutboxDataAccessMapper;
+    private final ApprovalOutboxJpaRepository approvalOutboxJpaRepository;
+    private final ApprovalOutboxDataAccessMapper restaurantApprovalOutboxDataAccessMapper;
 
-    public ApprovalOutboxRepositoryImpl(RestaurantApprovalOutboxJpaRepository
-                                                restaurantApprovalOutboxJpaRepository,
-                                        RestaurantApprovalOutboxDataAccessMapper
+    public ApprovalOutboxRepositoryImpl(ApprovalOutboxJpaRepository
+                                                approvalOutboxJpaRepository,
+                                        ApprovalOutboxDataAccessMapper
                                                 restaurantApprovalOutboxDataAccessMapper) {
-        this.restaurantApprovalOutboxJpaRepository = restaurantApprovalOutboxJpaRepository;
+        this.approvalOutboxJpaRepository = approvalOutboxJpaRepository;
         this.restaurantApprovalOutboxDataAccessMapper = restaurantApprovalOutboxDataAccessMapper;
     }
 
     @Override
     public OrderApprovalOutboxMessage save(OrderApprovalOutboxMessage orderApprovalOutboxMessage) {
-        return restaurantApprovalOutboxDataAccessMapper.restaurantApprovalOutboxEntityToOrderApprovalOutboxMessage(
-                restaurantApprovalOutboxJpaRepository.save(
+        return restaurantApprovalOutboxDataAccessMapper.approvalOutboxEntityToOrderApprovalOutboxMessage(
+                approvalOutboxJpaRepository.save(
                         restaurantApprovalOutboxDataAccessMapper
-                                .OrderApprovalOutboxMessageToRestaurantApprovalOutboxEntity(orderApprovalOutboxMessage)
+                                .OrderApprovalOutboxMessageToApprovalOutboxEntity(orderApprovalOutboxMessage)
                 )
         );
     }
@@ -40,30 +40,30 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
     public Optional<List<OrderApprovalOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatus(String type,
                                                                                              OutboxStatus outboxStatus,
                                                                                              SagaStatus... sagaStatus) {
-        return Optional.of(restaurantApprovalOutboxJpaRepository.findByTypeAndOutboxStatusAndSagaStatusIn(type,
+        return Optional.of(approvalOutboxJpaRepository.findByTypeAndOutboxStatusAndSagaStatusIn(type,
                         outboxStatus,
                         Arrays.asList(sagaStatus))
-                .orElseThrow(() -> new RestaurantApprovalOutboxNotFoundException("Restaurant approval outbox object " +
+                .orElseThrow(() -> new ApprovalOutboxNotFoundException("Approval outbox object " +
                         "could not be found for saga type: " + type))
                 .stream()
                 .map(restaurantApprovalOutboxDataAccessMapper
-                        ::restaurantApprovalOutboxEntityToOrderApprovalOutboxMessage).toList()
+                        ::approvalOutboxEntityToOrderApprovalOutboxMessage).toList()
         );
     }
 
     @Override
     public Optional<OrderApprovalOutboxMessage> findByTypeAndSagaIdAndSagaStatus(String type, UUID sagaId,
                                                                                  SagaStatus... sagaStatus) {
-        return restaurantApprovalOutboxJpaRepository.findByTypeAndSagaIdAndSagaStatusIn(type,
+        return approvalOutboxJpaRepository.findByTypeAndSagaIdAndSagaStatusIn(type,
                 sagaId,
                 Arrays.asList(sagaStatus)
-        ).map(restaurantApprovalOutboxDataAccessMapper::restaurantApprovalOutboxEntityToOrderApprovalOutboxMessage);
+        ).map(restaurantApprovalOutboxDataAccessMapper::approvalOutboxEntityToOrderApprovalOutboxMessage);
     }
 
     @Override
     public void deleteByTypeAndOutboxStatusAndSagaStatus(String type, OutboxStatus outboxStatus,
                                                          SagaStatus... sagaStatus) {
-        restaurantApprovalOutboxJpaRepository.deleteByTypeAndOutboxStatusAndSagaStatusIn(
+        approvalOutboxJpaRepository.deleteByTypeAndOutboxStatusAndSagaStatusIn(
                 type,
                 outboxStatus,
                 Arrays.asList(sagaStatus)

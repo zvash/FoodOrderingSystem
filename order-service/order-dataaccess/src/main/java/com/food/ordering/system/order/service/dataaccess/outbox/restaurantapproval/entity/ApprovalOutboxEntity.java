@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "restaurant_approval_outbox")
 @Entity
-public class RestaurantApprovalOutboxEntity {
+public class ApprovalOutboxEntity {
     @Id
     private UUID id;
     private UUID sagaId;
@@ -38,7 +38,7 @@ public class RestaurantApprovalOutboxEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RestaurantApprovalOutboxEntity that = (RestaurantApprovalOutboxEntity) o;
+        ApprovalOutboxEntity that = (ApprovalOutboxEntity) o;
         return id.equals(that.id);
     }
 
