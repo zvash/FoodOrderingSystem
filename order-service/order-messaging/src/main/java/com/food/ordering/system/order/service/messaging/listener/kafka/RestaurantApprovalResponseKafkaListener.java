@@ -1,11 +1,13 @@
 package com.food.ordering.system.order.service.messaging.listener.kafka;
 
+import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
+import com.food.ordering.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.restauarantapproval.RestaurantApprovalResponseMessageListener;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
-import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -42,23 +44,32 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
                 offsets.toString());
 
         messages.forEach(restaurantApprovalResponseAvroModel -> {
-            if (OrderApprovalStatus.APPROVED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
-                log.info("Processing approved restaurant approval for order id: {}",
-                        restaurantApprovalResponseAvroModel.getOrderId());
+            try {
+                if (OrderApprovalStatus.APPROVED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
+                    log.info("Processing approved restaurant approval for order id: {}",
+                            restaurantApprovalResponseAvroModel.getOrderId());
 
-                restaurantApprovalResponseMessageListener.orderApproved(orderMessagingDataMapper
-                        .restaurantApprovalResponseAvroModelToRestaurantApprovalResponse(
-                                restaurantApprovalResponseAvroModel));
-            } else if (OrderApprovalStatus.REJECTED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
-                log.info("Processing rejected restaurant approval for order id: {} with failure messages: {}",
-                        restaurantApprovalResponseAvroModel.getOrderId(),
-                        restaurantApprovalResponseAvroModel.getFailureMessages());
+                    restaurantApprovalResponseMessageListener.orderApproved(orderMessagingDataMapper
+                            .restaurantApprovalResponseAvroModelToRestaurantApprovalResponse(
+                                    restaurantApprovalResponseAvroModel));
+                } else if (OrderApprovalStatus.REJECTED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
+                    log.info("Processing rejected restaurant approval for order id: {} with failure messages: {}",
+                            restaurantApprovalResponseAvroModel.getOrderId(),
+                            restaurantApprovalResponseAvroModel.getFailureMessages());
 
-                restaurantApprovalResponseMessageListener.orderRejected(
-                        orderMessagingDataMapper
-                                .restaurantApprovalResponseAvroModelToRestaurantApprovalResponse(
-                                        restaurantApprovalResponseAvroModel)
-                );
+                    restaurantApprovalResponseMessageListener.orderRejected(
+                            orderMessagingDataMapper
+                                    .restaurantApprovalResponseAvroModelToRestaurantApprovalResponse(
+                                            restaurantApprovalResponseAvroModel)
+                    );
+                }
+            } catch (OptimisticLockingFailureException e) {
+                //NO-OP
+                log.error("Caught optimistic locking exception in RestaurantApprovalResponseKafkaListener for " +
+                        "order id: {}", restaurantApprovalResponseAvroModel.getOrderId());
+            } catch (OrderNotFoundException e) {
+                //NO-OP
+                log.error("No order found for order id: {}", restaurantApprovalResponseAvroModel.getOrderId());
             }
         });
 
