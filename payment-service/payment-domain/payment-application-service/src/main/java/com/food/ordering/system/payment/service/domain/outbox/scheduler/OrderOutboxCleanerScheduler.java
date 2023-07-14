@@ -28,7 +28,7 @@ public class OrderOutboxCleanerScheduler implements OutboxScheduler {
     public void processOutboxMessage() {
         Optional<List<OrderOutboxMessage>> outboxMessagesResponse =
                 orderOutboxHelper.getOrderOutboxMessagesByOutboxStatus(OutboxStatus.COMPLETED);
-        if (outboxMessagesResponse.isPresent()) {
+        if (outboxMessagesResponse.isPresent() && outboxMessagesResponse.get().size() > 0) {
             List<OrderOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderOutboxMessage for clean-up. The payloads: {}",
                     outboxMessages.size(),
