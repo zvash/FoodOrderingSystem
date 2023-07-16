@@ -36,7 +36,7 @@ public class OrderOutboxHelper {
     @Transactional(readOnly = true)
     public Optional<OrderOutboxMessage>
     getCompletedOrderOutboxMessageBySagaIdAndPaymentStatus(UUID sagaId,
-                                                               PaymentStatus paymentStatus) {
+                                                           PaymentStatus paymentStatus) {
         return orderOutboxRepository.findByTypeAndSagaIdAndPaymentStatusAndSagaStatus(
                 ORDER_SAGA_NAME,
                 sagaId,
@@ -82,6 +82,13 @@ public class OrderOutboxHelper {
     @Transactional
     public void deleteOrderOutboxMessage(OutboxStatus outboxStatus) {
         orderOutboxRepository.deleteByTypeAndOutboxStatus(ORDER_SAGA_NAME, outboxStatus);
+    }
+
+    @Transactional
+    public void updateOutboxMessage(OrderOutboxMessage orderOutboxMessage, OutboxStatus outboxStatus) {
+        orderOutboxMessage.setOutboxStatus(outboxStatus);
+        save(orderOutboxMessage);
+        log.info("Order outbox table status updated as: {}", outboxStatus.name());
     }
 
     private String createPayload(OrderEventPayload orderEventPayload) {
