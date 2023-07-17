@@ -7,7 +7,6 @@ import com.food.ordering.system.payment.service.dataaccess.outbox.order.mapper.O
 import com.food.ordering.system.payment.service.dataaccess.outbox.order.repository.OrderOutboxJpaRepository;
 import com.food.ordering.system.payment.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.ordering.system.payment.service.domain.ports.output.repository.OrderOutboxRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
