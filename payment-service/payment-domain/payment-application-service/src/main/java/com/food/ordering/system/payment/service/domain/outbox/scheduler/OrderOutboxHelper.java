@@ -37,7 +37,7 @@ public class OrderOutboxHelper {
     public Optional<OrderOutboxMessage>
     getCompletedOrderOutboxMessageBySagaIdAndPaymentStatus(UUID sagaId,
                                                            PaymentStatus paymentStatus) {
-        return orderOutboxRepository.findByTypeAndSagaIdAndPaymentStatusAndSagaStatus(
+        return orderOutboxRepository.findByTypeAndSagaIdAndPaymentStatusAndOutboxStatus(
                 ORDER_SAGA_NAME,
                 sagaId,
                 paymentStatus,
