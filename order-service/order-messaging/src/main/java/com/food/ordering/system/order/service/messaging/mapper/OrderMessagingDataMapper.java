@@ -83,12 +83,4 @@ public class OrderMessagingDataMapper {
                 .build();
     }
 
-    private List<Product> orderItemsToProductAvroModels(List<OrderItem> items) {
-        return items.stream().map(item ->
-                Product.newBuilder()
-                        .setId(item.getProduct().getId().getValue().toString())
-                        .setQuantity(item.getQuantity())
-                        .build()).toList();
-    }
-
 }
