@@ -28,6 +28,12 @@
             <groupId>com.food.ordering.system</groupId>
             <artifactId>kafka-model</artifactId>
         </dependency>
+
+        <!--to catch db errors-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
