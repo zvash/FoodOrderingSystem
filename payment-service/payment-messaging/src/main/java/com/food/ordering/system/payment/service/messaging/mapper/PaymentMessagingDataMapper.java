@@ -17,24 +17,6 @@ import java.util.UUID;
 @Component
 public class PaymentMessagingDataMapper {
 
-    public PaymentResponseAvroModel paymentCompletedEventToPaymentResponseAvroModel(
-            PaymentCompletedEvent paymentCompletedEvent
-    ) {
-        return paymentEventToPaymentResponseAvroModel(paymentCompletedEvent);
-    }
-
-    public PaymentResponseAvroModel paymentCancelledEventToPaymentResponseAvroModel(
-            PaymentCancelledEvent paymentCancelledEvent
-    ) {
-        return paymentEventToPaymentResponseAvroModel(paymentCancelledEvent);
-    }
-
-    public PaymentResponseAvroModel paymentFailedEventToPaymentResponseAvroModel(
-            PaymentFailedEvent paymentFailedEvent
-    ) {
-        return paymentEventToPaymentResponseAvroModel(paymentFailedEvent);
-    }
-
     public PaymentRequest paymentRequestAvroModelToPaymentRequest(PaymentRequestAvroModel paymentRequestAvroModel) {
         return PaymentRequest.builder()
                 .id(paymentRequestAvroModel.getId())
@@ -62,17 +44,4 @@ public class PaymentMessagingDataMapper {
                 .build();
     }
 
-    private PaymentResponseAvroModel paymentEventToPaymentResponseAvroModel(PaymentEvent paymentEvent) {
-        return PaymentResponseAvroModel.newBuilder()
-                .setId(UUID.randomUUID().toString())
-                .setSagaId("")
-                .setPaymentId(paymentEvent.getPayment().getId().getValue().toString())
-                .setCustomerId(paymentEvent.getPayment().getCustomerId().getValue().toString())
-                .setOrderId(paymentEvent.getPayment().getOrderId().getValue().toString())
-                .setPrice(paymentEvent.getPayment().getPrice().getAmount())
-                .setCreatedAt(paymentEvent.getPayment().getCreatedAt().toInstant())
-                .setPaymentStatus(PaymentStatus.valueOf(paymentEvent.getPayment().getPaymentStatus().name()))
-                .setFailureMessages(paymentEvent.getFailureMessages())
-                .build();
-    }
 }
