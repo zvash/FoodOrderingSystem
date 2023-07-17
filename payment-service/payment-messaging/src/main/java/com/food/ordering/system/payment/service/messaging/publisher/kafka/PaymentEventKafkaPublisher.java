@@ -16,17 +16,17 @@ import java.util.function.BiConsumer;
 
 @Slf4j
 @Component
-public class PaymentEventKafkaMessagePublisher implements PaymentResponseMessagePublisher {
+public class PaymentEventKafkaPublisher implements PaymentResponseMessagePublisher {
 
     private final PaymentMessagingDataMapper paymentMessagingDataMapper;
     private final KafkaProducer<String, PaymentResponseAvroModel> kafkaProducer;
     private final PaymentServiceConfigData paymentServiceConfigData;
     private final KafkaMessageHelper kafkaMessageHelper;
 
-    public PaymentEventKafkaMessagePublisher(PaymentMessagingDataMapper paymentMessagingDataMapper,
-                                             KafkaProducer<String, PaymentResponseAvroModel> kafkaProducer,
-                                             PaymentServiceConfigData paymentServiceConfigData,
-                                             KafkaMessageHelper kafkaMessageHelper) {
+    public PaymentEventKafkaPublisher(PaymentMessagingDataMapper paymentMessagingDataMapper,
+                                      KafkaProducer<String, PaymentResponseAvroModel> kafkaProducer,
+                                      PaymentServiceConfigData paymentServiceConfigData,
+                                      KafkaMessageHelper kafkaMessageHelper) {
         this.paymentMessagingDataMapper = paymentMessagingDataMapper;
         this.kafkaProducer = kafkaProducer;
         this.paymentServiceConfigData = paymentServiceConfigData;
