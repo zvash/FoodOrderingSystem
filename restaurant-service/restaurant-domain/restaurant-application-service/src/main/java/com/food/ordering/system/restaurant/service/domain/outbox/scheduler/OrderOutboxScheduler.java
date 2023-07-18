@@ -3,7 +3,7 @@ package com.food.ordering.system.restaurant.service.domain.outbox.scheduler;
 import com.food.ordering.system.outbox.OutboxScheduler;
 import com.food.ordering.system.outbox.OutboxStatus;
 import com.food.ordering.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
-import com.food.ordering.system.restaurant.service.domain.ports.output.message.publisher.OrderApprovalMessagePublisher;
+import com.food.ordering.system.restaurant.service.domain.ports.output.message.publisher.RestaurantApprovalResponseMessagePublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 public class OrderOutboxScheduler implements OutboxScheduler {
 
     private final OrderOutboxHelper orderOutboxHelper;
-    private final OrderApprovalMessagePublisher orderApprovalMessagePublisher;
+    private final RestaurantApprovalResponseMessagePublisher restaurantApprovalResponseMessagePublisher;
 
     public OrderOutboxScheduler(OrderOutboxHelper orderOutboxHelper,
-                                OrderApprovalMessagePublisher orderApprovalMessagePublisher) {
+                                RestaurantApprovalResponseMessagePublisher restaurantApprovalResponseMessagePublisher) {
         this.orderOutboxHelper = orderOutboxHelper;
-        this.orderApprovalMessagePublisher = orderApprovalMessagePublisher;
+        this.restaurantApprovalResponseMessagePublisher = restaurantApprovalResponseMessagePublisher;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class OrderOutboxScheduler implements OutboxScheduler {
                     outboxMessages.stream().map(outboxMessage ->
                             outboxMessage.getId().toString()).collect(Collectors.joining(",")));
             outboxMessages.forEach(outboxMessage ->
-                    orderApprovalMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
+                    restaurantApprovalResponseMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
             log.info("{} OrderOutboxMessage sent to message bus!", outboxMessages.size());
         }
     }
