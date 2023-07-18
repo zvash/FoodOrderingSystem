@@ -15,16 +15,10 @@ import java.util.List;
 public class OrderEventPayload {
 
     @JsonProperty
-    private String paymentId;
-
-    @JsonProperty
-    private String customerId;
-
-    @JsonProperty
     private String orderId;
 
     @JsonProperty
-    private BigDecimal price;
+    private String restaurantId;
 
     @JsonProperty
     private ZonedDateTime createdAt;
