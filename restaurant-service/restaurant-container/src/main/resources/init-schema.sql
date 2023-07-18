@@ -61,6 +61,33 @@ ALTER TABLE "restaurant".restaurant_products
         ON DELETE RESTRICT
         NOT VALID;
 
+DROP TYPE IF EXISTS outbox_status;
+CREATE TYPE outbox_status AS ENUM ('STARTED', 'COMPLETED', 'FAILED');
+
+DROP TABLE IF EXISTS "restaurant".order_outbox CASCADE;
+
+CREATE TABLE "restaurant".order_outbox
+(
+    id              uuid                     NOT NULL,
+    saga_id         uuid                     NOT NULL,
+    created_at      TIMESTAMP WITH TIME ZONE NOT NULL,
+    processed_at    TIMESTAMP WITH TIME ZONE NOT NULL,
+    type            character varying COLLATE pg_catalog."default",
+    payload         jsonb                    NOT NULL,
+    outbox_status   outbox_status            NOT NULL,
+    approval_status approval_status          NOT NULL,
+    version         INTEGER                  NOT NULL,
+    CONSTRAINT order_outbox_pkey PRIMARY KEY (id)
+);
+
+CREATE INDEX "payment_order_outbox_saga_status"
+    ON "restaurant".order_outbox
+        (type, approval_status);
+
+CREATE UNIQUE INDEX "payment_order_outbox_saga_id_approval_status_outbox_status"
+    ON "restaurant".order_outbox
+        (type, saga_id, approval_status, outbox_status);
+
 CREATE MATERIALIZED VIEW restaurant.order_restaurant_m_view
     TABLESPACE pg_default
 AS
