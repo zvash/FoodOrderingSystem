@@ -13,6 +13,12 @@
     <packaging>pom</packaging>
     <modules>
         <module>customer-container</module>
+        <module>customer-application</module>
+        <module>customer-dataaccess</module>
+        <module>customer-messaging</module>
+        <module>customer-messaging</module>
+        <module>customer-domain</module>
+        <module>customer-domain/customer-application-service</module>
     </modules>
 
     <dependencies>
