@@ -18,7 +18,6 @@
         <module>customer-messaging</module>
         <module>customer-messaging</module>
         <module>customer-domain</module>
-        <module>customer-domain/customer-application-service</module>
     </modules>
 
     <dependencies>
