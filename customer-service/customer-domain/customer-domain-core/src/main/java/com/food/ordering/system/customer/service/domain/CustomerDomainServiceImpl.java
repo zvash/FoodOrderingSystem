@@ -1,7 +1,7 @@
-package com.food.ordering.system.customer.service;
+package com.food.ordering.system.customer.service.domain;
 
-import com.food.ordering.system.customer.service.entity.Customer;
-import com.food.ordering.system.customer.service.event.CustomerCreatedEvent;
+import com.food.ordering.system.customer.service.domain.entity.Customer;
+import com.food.ordering.system.customer.service.domain.event.CustomerCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.ZoneId;
